@@ -38,3 +38,54 @@ What you would like initially is something like this:
 * controller does normal stuff
 * then makes sure that any "volt" models are synced to the rails data.
 * then does a "special" render operation that hands control over to volt, which delivers the page
+
+
+## Potential model
+In rails controller:
+
+```RUBY
+class CommentController < ApplicationController
+  def index
+    @comments = Comment.all
+  end
+end
+```
+
+would become
+
+```RUBY
+require 'volt' # arbitrary, could also be specfici to avoid module pattern
+               # exhibited, ie `require volt/application_controller/rails_synchonizer'
+
+class CommentController < ApplicationController
+  def index
+    @comments = @store._comments = Volt::VoltAppController::RailsSynchronizer.new(Comment.all)
+  end
+end
+```
+
+And the corresponding comments view in rails, originally
+
+```RUBY
+...
+  <div class='col-md-8'>
+    <% @comments.each do |c| %>
+      <p><%= @comment.text %></p>
+    <% end> %>
+  </div>
+...
+```
+
+becomes
+
+```RUBY
+<div class='col-md-8'>
+  {{ @comments.each do |c| }}
+  <p>{{ comment._text }}</p>
+  {{ end }}
+</div>
+```
+
+and theoretically, if a comment is updated or added it will now sync using the new layer.
+
+NOTE: this is pseudocode for a good chunk and really just me thinking out loud
