@@ -41,7 +41,22 @@ What you would like initially is something like this:
 
 
 ## Potential model
+
+the model, here
+
+```RUBY
+require 'volt/models/synchronizer' # Arbitrary, could be modular
+
+class Comment < ActiveRecord::Model
+  attr_accessor :text
+  volt_sync, :true
+end
 In rails controller:
+```
+
+would only need one line added, the volt sync option.
+
+The Controller,
 
 ```RUBY
 class CommentController < ApplicationController
@@ -54,7 +69,7 @@ end
 would become
 
 ```RUBY
-require 'volt' # arbitrary, could also be specfici to avoid module pattern
+require 'volt' # arbitrary, could also be specfic to avoid module pattern
                # exhibited, ie `require volt/application_controller/rails_synchonizer'
 
 class CommentController < ApplicationController
