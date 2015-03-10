@@ -44,6 +44,7 @@ What you would like initially is something like this:
 
 the model, here
 
+
 ```RUBY
 require 'volt/models/synchronizer' # Arbitrary, could be modular
 
@@ -51,12 +52,11 @@ class Comment < ActiveRecord::Model
   attr_accessor :text
   volt_sync, :true
 end
-In rails controller:
 ```
 
 would only need one line added, the volt sync option.
 
-The Controller,
+The controller,
 
 ```RUBY
 class CommentController < ApplicationController
