@@ -59,7 +59,7 @@ require 'volt' # arbitrary, could also be specfici to avoid module pattern
 
 class CommentController < ApplicationController
   def index
-    @comments = @store._comments = Volt::VoltAppController::RailsSynchronizer.new(Comment.all)
+    @comments = Volt::ApplicationController::Synchronizer.new(Comment.all)
   end
 end
 ```
@@ -71,7 +71,7 @@ And the corresponding comments view in rails, originally
   <div class='col-md-8'>
     <% @comments.each do |c| %>
       <p><%= @comment.text %></p>
-    <% end> %>
+    <% end %>
   </div>
 ...
 ```
@@ -87,5 +87,11 @@ becomes
 ```
 
 and theoretically, if a comment is updated or added it will now sync using the new layer.
+
+This could be powered by requiring synchronization of permissions, attributes, and a mapping of
+mongo id to rails' db id. The synchronization could be triggered by having an event fired upon
+the change of a field in the model on the frontend provided from the controller. This could be
+managed with a task queue and done with unique UPDATE queries rather than inserting the same values
+again, and updating the entire model with duplicate fields.
 
 NOTE: this is pseudocode for a good chunk and really just me thinking out loud
